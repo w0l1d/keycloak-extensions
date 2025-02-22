@@ -1,1 +1,2 @@
 org.keycloak.rest.totpvalidator.TOTPValidationResourceProviderFactory
+org.keycloak.rest.logout.GlobalLogoutResourceProviderFactory

@@ -1,106 +1,61 @@
 # Realm Resource Extensions
 
-This module provides custom realm-level resource providers for Keycloak, extending the default functionality with additional REST endpoints.
+Custom realm-level REST endpoints extending Keycloak's API functionality. This module implements the Realm Resource Provider SPI to add new REST endpoints to Keycloak realms.
 
 ## Current Providers
 
-### TOTP Validation Provider
+### [TOTP Validator](./docs/providers/totp-validator.md)
+REST endpoint for validating TOTP codes without standard authentication flow.
+- Standalone TOTP validation
+- Support for both Bearer token and Cookie authentication
+- Detailed validation responses
 
-A REST endpoint for validating Time-based One-Time Passwords (TOTP) without requiring the standard Keycloak authentication flow.
+### [Global Logout](./docs/providers/global-logout.md)
+Centralized session termination endpoint for multi-application environments.
+- Cross-application logout
+- OIDC compliant logout flow
+- Secure session termination
 
-#### Features
+## Provider Development
 
-- Validates TOTP codes against user's stored credentials
-- Supports both Bearer token and Identity Cookie authentication
-- Returns detailed validation results
-- Handles various error cases gracefully
+See these guides for development:
+- [General Provider Guidelines](../docs/development/guidelines.md)
+- [Provider Types Overview](../docs/development/provider-types.md)
+- [Realm Provider Specific Guide](./docs/development.md)
 
-#### API Reference
+## Implementation Notes
 
-**Endpoint:** `<keycloak_server>/realms/<realm_name>/validate-totp`
+### Common Features
+- Bearer token and Identity Cookie authentication
+- Comprehensive error handling
+- Detailed logging
+- Security-first approach
 
-**Method:** POST
-
-**Request Headers:**
-- `Content-Type: application/json`
-- `Authorization: Bearer <token>` (or valid Identity Cookie)
-
-**Request Body:**
-```json
-{
-    "realm": "your-realm-name",
-    "otpCode": "123456"
-}
+### Structure
+```
+src/main/java/org/keycloak/rest/
+├── totpvalidator/
+│   ├── TOTPValidationResourceProvider.java
+│   ├── TOTPValidationEndpoint.java
+│   └── TOTPValidationResourceProviderFactory.java
+└── logout/
+    ├── GlobalLogoutResourceProvider.java
+    ├── GlobalLogoutEndpoint.java
+    └── GlobalLogoutResourceProviderFactory.java
 ```
 
-**Response:**
-```json
-{
-    "valid": true|false,
-    "message": "Status message"
-}
-```
+## Quick Start
 
-**Possible Response Codes:**
-- 200: Validation successful
-- 400: Bad request (missing/invalid parameters)
-- 401: Authentication required
-- 403: Invalid TOTP code
-- 404: Realm not found
-- 500: Internal server error
-
-#### Error Handling
-
-The endpoint handles various error cases:
-- Missing/invalid authentication
-- Non-existent realm
-- User without configured TOTP
-- Invalid TOTP code
-- Internal processing errors
-
-#### Security Considerations
-
-- Requires valid user authentication (Bearer token or Identity Cookie)
-- Only validates TOTP for the authenticated user
-- Returns consistent error messages to prevent information leakage
-
-## Building
-
-```bash
-mvn clean install
-```
-
-The JAR will be generated in `target/realm-resource-extensions-1.0.jar`
+1. Build:
+   ```bash
+   mvn clean install
+   ```
+2. Deploy: Copy `target/realm-resource-extensions-1.0.jar` to Keycloak's providers directory
+3. Restart Keycloak
 
 ## Dependencies
 
-- Keycloak Core (`${version.kc}`)
+All dependencies are managed through the parent POM:
+- Keycloak Core (${version.kc})
 - Keycloak Server SPI
-- Keycloak Server SPI Private
-- Keycloak Model Infinispan
-- RESTEasy Reactive Common
-- Keycloak Services
-- Lombok
-
-## Installation
-
-1. Build the module
-2. Copy `target/realm-resource-extensions-1.0.jar` to Keycloak's `providers` directory
-3. Restart Keycloak
-
-## Development Guide
-
-To add a new realm resource provider:
-
-1. Create provider class implementing `RealmResourceProvider`
-2. Create factory class implementing `RealmResourceProviderFactory`
-3. Create endpoint class with JAX-RS annotations
-4. Register factory in `META-INF/services/org.keycloak.services.resource.RealmResourceProviderFactory`
-
-## Contributing
-
-When contributing:
-1. Follow existing code style
-2. Add appropriate error handling
-3. Document new endpoints
-4. Update this README with new provider details
+- RESTEasy Reactive
