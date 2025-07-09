@@ -47,7 +47,7 @@ public class Sha256PasswordHashProvider implements PasswordHashProvider {
     public boolean verify(final String rawPassword, final PasswordCredentialModel credential) {
         log.debug("Sha256PasswordHashProvider verify");
         final String hash = credential.getPasswordSecretData().getValue();
-        final String salt = new String(credential.getPasswordSecretData().getSalt());
+        final String salt = new String(credential.getPasswordSecretData().getSalt(), StandardCharsets.UTF_8);
 
         final int iterations = credential.getPasswordCredentialData().getHashIterations();
         return verify(salt + rawPassword, hash, iterations);
