@@ -8,6 +8,7 @@ This project provides additional functionality for Keycloak through custom provi
 
 - **TOTP Validator**: REST endpoint for validating TOTP codes
 - **Global Logout**: Centralized session termination across multiple applications
+- **SHA-256 Password Hash**: Password hash provider for SHA-256 verification
 
 ## Requirements
 
@@ -22,11 +23,29 @@ This project provides additional functionality for Keycloak through custom provi
 │   └── development/
 │       ├── guidelines.md
 │       └── provider-types.md
+├── password-hash-providers/
+│   ├── README.md
+│   └── src/
+│       └── main/
+│           ├── java/
+│           │   └── org/
+│           │       └── keycloak/
+│           │           └── providers/
+│           │               └── passwordhash/
+│           │                   └── sha256/
+│           │                       ├── NotImplementedException.java
+│           │                       ├── Sha256PasswordHashProvider.java
+│           │                       └── Sha256PasswordHashProviderFactory.java
+│           └── resources/
+│               └── META-INF/
+│                   └── services/
+│                       └── org.keycloak.credential.hash.PasswordHashProviderFactory
 ├── realm-resource-extensions/
 │   ├── docs/
 │   │   └── providers/
 │   │       ├── totp-validator.md
-│   │       └── global-logout.md
+│   │       ├── global-logout.md
+│   │       └── sha256-password-hash.md
 │   └── src/
 │       └── main/
 │           ├── java/
@@ -57,7 +76,7 @@ A REST endpoint for validating TOTP codes without going through the standard Key
 
 **Endpoint**: `POST /realms/{realm-name}/validate-totp`
 
-See [TOTP Validator Documentation](realm-resource-extensions/docs/providers/totp-validator.md) for details.
+See [TOTP Validator Documentation](docs/providers/totp-validator.md) for details.
 
 ### Global Logout
 
@@ -65,7 +84,15 @@ Centralized session termination across multiple applications sharing the same au
 
 **Endpoint**: `GET /realms/{realm-name}/global-logout`
 
-See [Global Logout Documentation](realm-resource-extensions/docs/providers/global-logout.md) for details.
+See [Global Logout Documentation](docs/providers/global-logout.md) for details.
+
+### SHA-256 Password Hash
+
+A password hash provider that implements SHA-256 hashing for password verification, primarily for migrating from legacy systems. See the [password-hash-providers README](password-hash-providers/README.md) for details and usage.
+
+**Provider ID**: `SHA-256`
+
+See [SHA-256 Password Hash Documentation](docs/providers/sha256-password-hash.md) for implementation details and security notes.
 
 ## Building and Installation
 
@@ -74,9 +101,10 @@ See [Global Logout Documentation](realm-resource-extensions/docs/providers/globa
    mvn clean install
    ```
 
-2. Copy the JAR file to Keycloak's providers directory:
+2. Copy the JAR files to Keycloak's providers directory:
    ```bash
    cp realm-resource-extensions/target/realm-resource-extensions-1.0.jar $KEYCLOAK_HOME/providers/
+   cp password-hash-providers/target/password-hash-providers-1.0.jar $KEYCLOAK_HOME/providers/
    ```
 
 3. Restart Keycloak
@@ -90,9 +118,15 @@ For detailed development guidelines and documentation:
 
 ### Adding New Providers
 
+#### Realm Resource Providers
 1. Create provider classes following the structure in `realm-resource-extensions/src/main/java/org/keycloak/rest/`
 2. Register the provider factory in `META-INF/services/org.keycloak.services.resource.RealmResourceProviderFactory`
 3. Add documentation in `realm-resource-extensions/docs/providers/`
+
+#### Password Hash Providers
+1. Create provider classes following the structure in `password-hash-providers/src/main/java/org/keycloak/providers/passwordhash/`
+2. Register the provider factory in `password-hash-providers/src/main/resources/META-INF/services/org.keycloak.credential.hash.PasswordHashProviderFactory`
+3. Add documentation in `password-hash-providers/README.md` and `realm-resource-extensions/docs/providers/`
 
 ## Dependencies
 

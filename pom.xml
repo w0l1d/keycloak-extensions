@@ -11,6 +11,7 @@
 
     <modules>
         <module>realm-resource-extensions</module>
+        <module>password-hash-providers</module>
     </modules>
 
     <properties>
