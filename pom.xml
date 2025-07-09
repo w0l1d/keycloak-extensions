@@ -5,19 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.keycloak.providers</groupId>
-    <artifactId>keycloak-extentions</artifactId>
+    <artifactId>keycloak-extensions</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>realm-resource-extensions</module>
+        <module>password-hash-providers</module>
     </modules>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.kc>26.1.0</version.kc>
+        <version.kc>26.2.2</version.kc>
         <version.quarkus.resteasy>3.15.1</version.quarkus.resteasy>
         <version.lombok>1.18.36</version.lombok>
     </properties>

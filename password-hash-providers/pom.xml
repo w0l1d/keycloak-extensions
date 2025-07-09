@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.keycloak.providers</groupId>
-        <artifactId>keycloak-extensions</artifactId>
+        <artifactId>keycloak-extensions-w0l1d</artifactId>
         <version>1.0</version>
     </parent>
 
-    <artifactId>realm-resource-extensions</artifactId>
+    <artifactId>password-hash-providers</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -36,11 +36,7 @@
             <scope>provided</scope>
             <version>${version.kc}</version>
         </dependency>
-        <dependency>
-            <groupId>org.keycloak</groupId>
-            <artifactId>keycloak-model-infinispan</artifactId>
-            <version>${version.kc}</version>
-        </dependency>
+
         <dependency>
             <groupId>io.quarkus.resteasy.reactive</groupId>
             <artifactId>resteasy-reactive-common</artifactId>

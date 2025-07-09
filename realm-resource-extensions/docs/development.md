@@ -203,8 +203,8 @@ public Response validateTOTP(ValidationRequest request) {
 ## Real-World Examples
 
 Refer to our implementations:
-1. [TOTP Validator](./providers/totp-validator.md)
-2. [Global Logout](./providers/global-logout.md)
+1. [TOTP Validator](../../docs/providers/totp-validator.md)
+2. [Global Logout](../../docs/providers/global-logout.md)
 
 ## Troubleshooting
 
