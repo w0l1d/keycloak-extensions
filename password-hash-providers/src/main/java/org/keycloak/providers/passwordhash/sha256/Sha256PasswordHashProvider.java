@@ -33,7 +33,7 @@ public class Sha256PasswordHashProvider implements PasswordHashProvider {
     @Override
     public PasswordCredentialModel encodedCredential(final String rawPassword, final int iterations) {
         log.debug("Sha256PasswordHashProvider encodedCredential");
-        throw new NotImplementedException(format((java.util.Locale) null, "{0} encoding not implemented! " +
+        throw new NotImplementedException(format("{0} encoding not implemented! " +
                 "Implementation only required if we want to store the password in {0}", PROVIDER_ID));
     }
 
